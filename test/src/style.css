@@ -1,3 +1,20 @@
 .hello {
   color: red;
 }
+
+.img-class {
+  background-image: url(./assets/testjpg.jpeg) !important;
+}
+
+@font-face {
+  font-family: 'iconfont';
+  src: url('./assets/iconfont.ttf') format('truetype');
+}
+
+.icon {
+  font-family: 'iconfont' !important;
+  font-size: 30px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
