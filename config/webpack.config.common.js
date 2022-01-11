@@ -1,7 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 抽离css
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin') // 压缩css
 const toml = require('toml')
 const yaml = require('yamljs')
 const json5 = require('json5')
@@ -31,21 +30,17 @@ module.exports = {
     // shared: 'lodash'
   }, // 打包入口
   output: {
-    filename: '[name].bundle.js', // 输出文件的文件名
     // __dirname表示获取到我们当前的webpack.config.js文件所在的物理路径
-    path: path.resolve(__dirname, './dist'), // 文件的输出路径
+    path: path.resolve(__dirname, '../dist'), // 文件的输出路径
     clean: true, // 清理上一次打包遗留的文件
     // [contenthash] 根据文件的内容自动生成hash字符串文件名
     // [ext] 根据文件扩展名自动生成对应的扩展名
-    assetModuleFilename: 'images/[contenthash][ext]' // 自己定义打包输出的文件路径文件名
+    assetModuleFilename: 'images/[contenthash][ext]', // 自己定义打包输出的文件路径文件名
   },
-  mode: 'development', // development 开发模式  \  production 生产模式
-
-  devtool: 'inline-source-map',
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html', // 指定文件模板生成对应文件
+      template: './public/index.html', // 指定文件模板生成对应文件
       filename: 'app.html', // 生成的文件名
       inject: 'body' // 自定义scripte标签的位置
     }),
@@ -55,10 +50,6 @@ module.exports = {
       }
     ) // 插件并不会将css加载到页面中，这里HtmlWebpackPlugin帮助我们自动生成link标签或者在创建index.html文件时使用link标签
   ],
-
-  devServer: {
-    static: './dist'
-  },
 
   module: {
     rules: [
@@ -139,12 +130,14 @@ module.exports = {
     ]
   },
   optimization: {
-    minimize: true, // 开发环境下启用css优化
-    minimizer: [
-      new CssMinimizerPlugin()
-    ],
-    splitChunks: { // 可以将公共的依赖模块提取到已有的入口chunk中，或者提取到一个新生成的chunk中
-      chunks: 'all'
+    splitChunks: {
+      cacheGroups: { // 将第三方库单独提取到vendor chunk中(因为他们很少像本地源代码那样被频繁修改)
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
     }
   }
 }
