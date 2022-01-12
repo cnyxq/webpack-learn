@@ -41,7 +41,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html', // 指定文件模板生成对应文件
-      filename: 'app.html', // 生成的文件名
+      filename: 'index.html', // 生成的文件名
       inject: 'body' // 自定义scripte标签的位置
     }),
     new MiniCssExtractPlugin(
