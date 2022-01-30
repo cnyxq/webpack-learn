@@ -1,11 +1,5 @@
-class A {
-  constructor() {
-    this.str = 'helloworld!'
-  }
-  sayHello () {
-    console.log(this.str)
-  }
-}
-
-const a = new A()
-a.sayHello()
+fetch('/api/hello')
+  .then(res => res.text())
+  .then(result => {
+    console.log(result)
+  })
